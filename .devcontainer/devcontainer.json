@@ -24,5 +24,8 @@
   "postCreateCommand": "echo 'Conda environment created at image build time from /tmp/environment.yml'",
   "postStartCommand": "/workspace/.devcontainer/start-jupyter.sh || true",
   "forwardPorts": [8888],
-  "remoteUser": "vscode"
+  "remoteUser": "vscode",
+  "runArgs": [
+    "--add-host=host.docker.internal:host-gateway"
+  ]
 }

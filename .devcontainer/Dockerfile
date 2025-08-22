@@ -49,12 +49,13 @@ COPY ../environment.yml /tmp/environment.yml
 # Accepting explicitly for repo.anaconda.com/pkgs/main and repo.anaconda.com/pkgs/r
 RUN /opt/conda/bin/conda tos accept --override-channels --channel https://repo.anaconda.com/pkgs/main || true \
     && /opt/conda/bin/conda tos accept --override-channels --channel https://repo.anaconda.com/pkgs/r || true \
+    && /opt/conda/bin/conda config --system --add channels conda-forge \
+    && /opt/conda/bin/conda config --system --set channel_priority strict \
     && /opt/conda/bin/conda env create -f /tmp/environment.yml -n dev \
     && /opt/conda/bin/conda clean -afy
 
 # Register the kernel for convenience (so notebooks see the env)
-RUN /opt/conda/bin/conda run -n dev python -m ipykernel install --name=devcontainer --display-name "devcontainer (conda)" || true \
-    && dotnet tool install --tool-path /usr/local/bin Microsoft.dotnet-interactive || true \
+RUN dotnet tool install --tool-path /usr/local/bin Microsoft.dotnet-interactive || true \
     && /opt/conda/bin/conda run -n dev dotnet-interactive jupyter install --path ${CONDA_DIR}/envs/dev/share/jupyter/kernels || true
 
 # Create workspace folder and set ownership to vscode user that will be created later
