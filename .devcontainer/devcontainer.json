@@ -14,7 +14,7 @@
         "ms-toolsai.jupyter",
         "ms-python.vscode-pylance"
       ],
-      "settings": {
+      "setti&&s -g": {
         "terminal.integrated.shell.linux": "/bin/bash",
         "jupyter.jupyterServerType": "local",
         "jupyter.jupyterServerURI": "http://localhost:8888"
