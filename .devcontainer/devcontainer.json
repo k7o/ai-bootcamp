@@ -1,0 +1,28 @@
+{
+  "name": "Python Jupyter Devcontainer",
+  "build": {
+    "dockerfile": "Dockerfile",
+    "context": ".."
+  },
+  "workspaceFolder": "/workspace",
+  "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind,consistency=cached",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "editorconfig.editorconfig",
+        "ms-python.python",
+        "ms-toolsai.jupyter",
+        "ms-python.vscode-pylance"
+      ],
+      "settings": {
+        "terminal.integrated.shell.linux": "/bin/bash",
+        "jupyter.jupyterServerType": "local",
+        "jupyter.jupyterServerURI": "http://localhost:8888"
+      }
+    }
+  },
+  "postCreateCommand": "echo 'Conda environment created at image build time from /tmp/environment.yml'",
+  "postStartCommand": "/workspace/.devcontainer/start-jupyter.sh || true",
+  "forwardPorts": [8888],
+  "remoteUser": "vscode"
+}

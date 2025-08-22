@@ -1,0 +1,98 @@
+# Python related
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyo
+*.pyd
+*.pyc
+*.pdb
+*.pyt
+
+# Distribution / packaging
+.Python
+env/
+venv/
+ENV/
+.venv/
+build/
+dist/
+*.egg-info/
+.eggs/
+pip-wheel-metadata/
+*.egg
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Unit test / coverage
+.coverage
+htmlcov/
+.tox/
+.nox/
+.pytest_cache/
+nosetests.xml
+coverage.xml
+*.cover
+
+# PyInstaller
+#  Usually these files are written by a python script from a template
+#  before PyInstaller builds the exe, so as to inject date/other infos into it.
+*.manifest
+*.spec
+
+# Installer/IDE files
+.Python
+.python-version
+
+# VS Code workspace/settings (optional)
+.vscode/
+
+# Jupyter
+.ipynb_checkpoints/
+**/.ipynb_checkpoints/
+*.nbconvert.ipynb
+jupyter_runtime/
+profile_default/
+.ipython/
+# Notebook outputs
+*.nbconvert.*
+
+# Local jupyter artifacts created by devcontainer start script
+jupyter.log
+jupyter.pid
+
+# Jupyter trash/workspace-trash folders
+# JupyterLab and notebook trash folders created by some extensions or workspace operations
+.jupyter/trash/
+.jupyter/trash/**
+.local/share/jupyter/**/trash/
+.local/share/jupyter/**/trash/**
+**/lab/workspaces/.trash/
+**/lab/workspaces/.trash/**
+
+# MyPy
+.mypy_cache/
+
+# C extensions
+*.so
+
+# Misc
+*.log
+*.sqlite3
+
+# Ignore sensitive files
+.env
+
+# OS trash / thumbnail files
+# macOS
+.DS_Store
+# Linux trash (per-user)
+.local/share/Trash/
+.Trash-*/
+# Windows thumbnail & folder settings
+Thumbs.db
+ehthumbs.db
+desktop.ini
+
+# End of file
