@@ -9,6 +9,7 @@ dependencies:
   - ipywidgets
   - jupyterlab
   - jupyter-ai
+  - jupyter_contrib_nbextensions
   - langchain-openai
   - pandas
   - numpy
