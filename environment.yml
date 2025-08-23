@@ -4,9 +4,11 @@ channels:
   - defaults
 dependencies:
   - python=3.11
+  - ipython
+  - ipykernel
+  - ipywidgets
   - jupyterlab
   - jupyter-ai
-  - ipykernel
   - langchain-openai
   - pandas
   - numpy
@@ -16,4 +18,7 @@ dependencies:
   - scikit-learn
   - pip
   - nltk
+  - spacy
+  - spacy-model-en_core_web_sm
+  - spacy-model-nl_core_news_lg
   - pip: []

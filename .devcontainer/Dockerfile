@@ -46,6 +46,7 @@ RUN wget --quiet https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86
 
 # Copy environment.yml and create the conda environment from it
 COPY ../environment.yml /tmp/environment.yml
+
 # Ensure Conda Terms of Service are accepted for Anaconda channels used by `defaults`
 # Accepting explicitly for repo.anaconda.com/pkgs/main and repo.anaconda.com/pkgs/r
 RUN ${CONDA_DIR}/bin/conda tos accept --override-channels --channel https://repo.anaconda.com/pkgs/main || true \
@@ -55,14 +56,18 @@ RUN ${CONDA_DIR}/bin/conda tos accept --override-channels --channel https://repo
     && ${CONDA_DIR}/bin/conda env create -f /tmp/environment.yml -n dev \
     && ${CONDA_DIR}/bin/conda clean -afy
 
-# Register the kernel for convenience (so notebooks see the env)
-RUN dotnet tool install --tool-path /usr/local/bin Microsoft.dotnet-interactive || true \
-    && ${CONDA_DIR}/bin/conda run -n dev dotnet-interactive jupyter install --path ${CONDA_DIR}/envs/dev/share/jupyter/kernels || true
-
 # Create workspace folder and set ownership to vscode user that will be created later
 RUN useradd -m -s /bin/bash vscode \
     && mkdir -p /workspace \
-    && chown -R vscode:vscode /workspace
+    && chown -R vscode:vscode /workspace \
+    && chown -R vscode:vscode ${CONDA_DIR}/envs/dev \
+    && mkdir -p ${CONDA_DIR}/pkgs \
+    && chown -R vscode:vscode ${CONDA_DIR}/pkgs \
+    && chown -R vscode:vscode ${CONDA_DIR}/condabin || true
+
+# Register the kernel for convenience (so notebooks see the env)
+RUN dotnet tool install --tool-path /usr/local/bin Microsoft.dotnet-interactive || true \
+    && ${CONDA_DIR}/bin/conda run -n dev dotnet-interactive jupyter install --path ${CONDA_DIR}/envs/dev/share/jupyter/kernels || true
 
 # Install all NLTK data into the conda 'dev' env so it's available at runtime
 RUN ${CONDA_DIR}/envs/dev/bin/python -m nltk.downloader -d ${CONDA_DIR}/envs/dev/share/nltk_data all \
