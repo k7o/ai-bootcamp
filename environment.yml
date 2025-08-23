@@ -15,4 +15,5 @@ dependencies:
   - seaborn
   - scikit-learn
   - pip
+  - nltk
   - pip: []

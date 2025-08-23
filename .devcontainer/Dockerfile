@@ -29,6 +29,7 @@ RUN apt-get update \
          gnupg \
          dirmngr \
          apt-transport-https \
+         xdg-utils \
      && curl -fsSL https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > /usr/share/keyrings/microsoft.gpg \
      && echo "deb [arch=amd64 signed-by=/usr/share/keyrings/microsoft.gpg] https://packages.microsoft.com/ubuntu/22.04/prod jammy main" > /etc/apt/sources.list.d/microsoft-prod.list \
      && apt-get update \
@@ -47,21 +48,25 @@ RUN wget --quiet https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86
 COPY ../environment.yml /tmp/environment.yml
 # Ensure Conda Terms of Service are accepted for Anaconda channels used by `defaults`
 # Accepting explicitly for repo.anaconda.com/pkgs/main and repo.anaconda.com/pkgs/r
-RUN /opt/conda/bin/conda tos accept --override-channels --channel https://repo.anaconda.com/pkgs/main || true \
-    && /opt/conda/bin/conda tos accept --override-channels --channel https://repo.anaconda.com/pkgs/r || true \
-    && /opt/conda/bin/conda config --system --add channels conda-forge \
-    && /opt/conda/bin/conda config --system --set channel_priority strict \
-    && /opt/conda/bin/conda env create -f /tmp/environment.yml -n dev \
-    && /opt/conda/bin/conda clean -afy
+RUN ${CONDA_DIR}/bin/conda tos accept --override-channels --channel https://repo.anaconda.com/pkgs/main || true \
+    && ${CONDA_DIR}/bin/conda tos accept --override-channels --channel https://repo.anaconda.com/pkgs/r || true \
+    && ${CONDA_DIR}/bin/conda config --system --add channels conda-forge \
+    && ${CONDA_DIR}/bin/conda config --system --set channel_priority strict \
+    && ${CONDA_DIR}/bin/conda env create -f /tmp/environment.yml -n dev \
+    && ${CONDA_DIR}/bin/conda clean -afy
 
 # Register the kernel for convenience (so notebooks see the env)
 RUN dotnet tool install --tool-path /usr/local/bin Microsoft.dotnet-interactive || true \
-    && /opt/conda/bin/conda run -n dev dotnet-interactive jupyter install --path ${CONDA_DIR}/envs/dev/share/jupyter/kernels || true
+    && ${CONDA_DIR}/bin/conda run -n dev dotnet-interactive jupyter install --path ${CONDA_DIR}/envs/dev/share/jupyter/kernels || true
 
 # Create workspace folder and set ownership to vscode user that will be created later
 RUN useradd -m -s /bin/bash vscode \
     && mkdir -p /workspace \
     && chown -R vscode:vscode /workspace
+
+# Install all NLTK data into the conda 'dev' env so it's available at runtime
+RUN ${CONDA_DIR}/envs/dev/bin/python -m nltk.downloader -d ${CONDA_DIR}/envs/dev/share/nltk_data all \
+ && chown -R vscode:vscode ${CONDA_DIR}/envs/dev/share/nltk_data || true
 
 # Install Starship prompt and configure it for the vscode user
 RUN ARCH="x86_64-unknown-linux-gnu" && \
