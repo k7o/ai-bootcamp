@@ -10,6 +10,7 @@ dependencies:
   - jupyterlab
   - jupyter-ai
   - jupyter_contrib_nbextensions
+  - gensim
   - langchain-openai
   - pandas
   - numpy
@@ -22,4 +23,5 @@ dependencies:
   - spacy
   - spacy-model-en_core_web_sm
   - spacy-model-nl_core_news_lg
+  - transformers
   - pip: []
